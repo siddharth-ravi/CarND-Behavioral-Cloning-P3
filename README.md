@@ -1,5 +1,75 @@
 # Behavioral Cloning Project
 
+The steps executed in this project are the following:
+
+  *  Use the simulator to collect data of good driving behavior
+
+  * Build, a convolution neural network in Keras that predicts steering angles from images
+
+  * Train and validate the model with a training and validation set
+
+  * Test that the model successfully drives around the track without leaving the road
+
+## Model Architecture and Training Strategy
+
+  I experimented with 30+ variations of data, model architecture and training parameters.  I ran each combination multiple types as a   network may end up poorly trained due to the random weights initialized or due to the way in which the data was shuffled randomly.  Once a good data set was collected, multiple networks were able to drive one lap around the track without going outside the track – but some architecture options gave better and more consistent results.
+
+### 1. DATA
+My data collection strategy involved the following: 
+- Running the simulator in training mode on my laptop with 400x300 screen resolution and ‘Fastest’ graphics quality. 
+- Recording data in short clips and pickling the data.  Multiple pickle files were created so that the data could be chosen and assembled in a modular manner and minimizing the amount of large file data uploads to the AWS GPU 
+
+The following are the observations: 
+
+* Normal anticlockwise driving data: Was attempted at 30 mph and 10mph - the latter gave better results due to smoother driving. 
+      
+* Clockwise driving data : 1 round of driving clockwise around the track was recorded
+
+* Recovery driving : Recovery driving data was recorded in specific sections of the track. After a few autonomous driving videos were seen, more recovery data was recorded in areas of sharp turns, unusual mud patches, plants etc. where the car veered off the track. It was important that the recovery image rows were proportional to the normal driving rows. In the best model, recorded recovery driving rows were quadrupled to be impactful in the learned model. 
+
+* Flipping Images: Flipping images also resulted in a successful driving lap but the best model did not use flipping of images – maybe because the clockwise driving data was adequate
+
+* Cropping Images: Cropping the top 50 pixels and bottom 20 pixels gave good results. Cropping the top 60 pixels was not more effective than cropping 50 pixels. 
+
+
+### 2. MODEL ARCHITECTURE
+
+I experimented with various convolutional layers and filters, use of dropout. 
+
+* Number of convolutional layers: 2 layers with max pooling gave good results. Did not experiment beyond 3 layers as 2 layers performed better than 3 layers. 
+
+* Filter size: I tried 3x3, 5x5, 7x7, 10x10 filters.  5x5 gave the best results. Rectangular filters were tried as lane lines are vertical – gave reasonable results but not an improvement over square filters. 
+
+* Number of filters: I tried using combinations of 4, 8, 12, 16, 24 and 32 filters. Using 8 filters in the first layer and 16 in the second layer gave good results. 
+
+* Dropout: To reduce overfitting, dropout of 0.1, 0.2, 0.5 were tried.  0.1 and 0.2 gave successful laps but the model with the smoothest drive did not use dropout. 
+
+### 3. TRAINING PARAMETERS
+
+As this is a regression model, MSE was used as the error metric. The model used an Adam optimizer, so the learning rate was not tuned manually.  The data was shuffled and 20% of the data was used for validation.  It was found that training of 3-5 epochs gave the best results.  Even using dropout, overfitting was observed beyond 5 epochs. 
+
+Another observation is that validation MSE is not a good indicator of whether a lap will successfully complete or not.  This is because of multiple reasons: 
+
+
+
+- The training data does not always use the best turning angle at each step. My driving using a keyboard involved straight driving primarily with turns as required – e.g. 0, 0, -1.5 when in reality -0.5, -0.5, -0.5 would have been better driving. Hence, the training data is flawed at an individual row level though good when averaged. 
+
+- The car may drive close to the training driving for most of the track but may fail badly at one specific place.  Failing in a lap is impacted more by a ‘local MSE’ rather than an ‘overall MSE’.  Validation MSE as an error metric does not measure consistency of MSE across the track. 
+
+The submitted model uses 2 convolutional layers: 
+
+- 8  5x5 filters with RELU activation followed by max pooling
+
+- 16 5x5 filters with RELU activation followed by max pooling
+
+- No dropout 
+
+- A 128 node fully connected layer followed by a single node output layer
+
+
+
+# Original Readme
+
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
 Overview
@@ -8,7 +78,11 @@ This repository contains starting files for the Behavioral Cloning Project.
 
 In this project, you will use what you've learned about deep neural networks and convolutional neural networks to clone driving behavior. You will train, validate and test a model using Keras. The model will output a steering angle to an autonomous vehicle.
 
-We have provided a simulator where you can steer a car around a track for data collection. You'll use image data and steering angles to train a neural network and then use this model to drive the car autonomously around the track.
+
+
+We have provided a simulator where you can steer a car around a track for data collection. You'll use image data and steering angles to 
+
+train a neural network and then use this model to drive the car autonomously around the track.
 
 We also want you to create a detailed writeup of the project. Check out the [writeup template](https://github.com/udacity/CarND-Behavioral-Cloning-P3/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup. The writeup can be either a markdown file or a pdf document.
 
