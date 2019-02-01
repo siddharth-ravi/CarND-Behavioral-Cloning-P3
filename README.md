@@ -66,6 +66,8 @@ The submitted model uses 2 convolutional layers:
 
 - A 128 node fully connected layer followed by a single node output layer
 
+![GIF](./examples/CARND_BEHAVIORCLONING_gif.gif)
+
 
 
 # Original Readme
