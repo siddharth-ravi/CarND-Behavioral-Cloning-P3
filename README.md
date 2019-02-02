@@ -66,7 +66,7 @@ The submitted model uses 2 convolutional layers:
 
 - A 128 node fully connected layer followed by a single node output layer
 
-### SAMPLE VIDEO OF THE CAR DRIVING USING BEHAVIOR CLONING
+#### The model has learnt to drive quite well!!
 
 ![GIF](./examples/CarND_BehaviorCloning_gif.gif)
 
