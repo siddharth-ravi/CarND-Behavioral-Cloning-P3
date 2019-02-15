@@ -1,5 +1,9 @@
 # Behavioral Cloning Project
 
+#### Final Outcome:  The model has learnt to drive quite well!!
+
+![GIF](./examples/CarND_BehaviorCloning_gif.gif)
+
 The steps executed in this project are the following:
 
   *  Use the simulator to collect data of good driving behavior
@@ -65,11 +69,6 @@ The submitted model uses 2 convolutional layers:
 - No dropout 
 
 - A 128 node fully connected layer followed by a single node output layer
-
-#### The model has learnt to drive quite well!!
-
-![GIF](./examples/CarND_BehaviorCloning_gif.gif)
-
 
 
 # Original Readme
