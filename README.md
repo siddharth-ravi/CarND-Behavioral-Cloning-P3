@@ -2,7 +2,7 @@
 
 #### Objective: Use Keras to train a self driving car to steer based on past driving on the same path. 
 
-#### Final Outcome:  The model has learnt to drive quite well!!
+#### Final Outcome:  The Keras model successfully steers the car along the track.
 
 ![GIF](./examples/CarND_BehaviorCloning_gif.gif)
 
